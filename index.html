@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="UTF-8" />
+    <title>soyo</title>
+  </head>
+  <body>
+    <div id="app">
+
+      <img class="main" src="./static/png/1_crop.png" alt="Image"/>
+      <img class="main" src="./static/png/2_crop.png" alt="Image"/>
+      <img class="main" src="./static/png/3_crop.png" alt="Image"/>
+      <img class="main" src="./static/png/4_crop.png" alt="Image"/>
+      <img class="main" src="./static/png/5_crop.png" alt="Image"/>
+      <img class="main" src="./static/png/6_crop.png" alt="Image"/>
+      <img class="main" src="./static/png/7_crop.png" alt="Image"/>
+      <img class="main" src="./static/png/8_crop.png" alt="Image"/>
+    </div>
+    <div id="angleDisplay">Move your mouse to see the angle!</div>
+  </body>
+  <style>
+    #app {
+      position: relative;
+      height: 100vh; /* 容器高度 */
+    }
+    .main {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* 确保完全居中 */
+      width: 700px;
+      height: auto;
+      
+    }
+  </style>
+  <script>
+    function preloadImages() {
+      for (var i = 0; i < 8; i++) {
+        var img = new Image();
+        img.src = `./static/png/${i + 1}_crop.png`;
+      }
+    }
+
+    preloadImages();
+
+
+
+
+    const angleDisplay = document.getElementById('angleDisplay');
+    const main = document.querySelectorAll('.main');
+    for (var i = 0; i < main.length; i++) {
+      main[i].style.display = 'none';
+    }
+    main[0].style.display = 'block';
+    const arr = [0, 45, 90, 135, 180, 225, 270, 315, 360];
+    document.addEventListener("mousemove", (event) => {
+      // 获取鼠标位置
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+
+      // 计算中心点
+      const centerX = window.innerWidth / 2 - 90;
+      const centerY = window.innerHeight / 2 - 100;
+
+      // 计算角度
+      const angleRad = Math.atan2(mouseY - centerY, mouseX - centerX);
+            const angleDeg = (angleRad * (360 / Math.PI) + 360)/2;
+
+      // 显示角度
+      var ans = 0;
+      for(var i = 0; i < arr.length; i++){
+        if(angleDeg >= arr[i]){
+          ans = i;
+        }
+      }
+      for (var i = 0; i < main.length; i++) {
+        main[i].style.display = 'none';
+      }
+      main[ans].style.display = 'block';
+      angleDisplay.textContent = `./static/png/${ans + 1}_crop.png center: ${centerX}, ${centerY} mouse: ${mouseX}, ${mouseY} Angle: ${angleDeg.toFixed(2)}°`;
+    });
+  </script>
+</html>
